@@ -9,24 +9,24 @@ import {
 import Header from "../Header";
 import Dashboard from "../../pages/Dashboard";
 
+// styles
+import useStyles from "./styles";
+
 
 
 
 function Layout(props) {
-    const { match, location, history } = props;
+    let classes = useStyles();
 
     return (
-        <div >
+        <div className={classes.root}>
             <>
                 <Header  />
                 <Switch>
                     <Route path="/app/dashboard" component={Dashboard} />
+                    <Route exact path="/app/workflows" render={() => <Redirect to="/app/dashboard" />}/>
                 </Switch>
-                <Route
-                exact
-                path="/app/workflows"
-                render={() => <Redirect to="/app/dashboard" />}
-              />
+                
             </>
         </div>
     );
