@@ -1,10 +1,10 @@
 import React from "react";
 import { HashRouter, Route, Switch, Redirect } from "react-router-dom";
 import Layout from "./Layout";
-import Login from "./Login";
+import Login from "../pages/Login";
 
 export default function App() {
-  let isAuthenticated  = true;
+  let isAuthenticated  = false;
   return (
     <HashRouter>
       <Switch>
