@@ -4,7 +4,7 @@ import Layout from "./Layout";
 import Login from "../pages/Login";
 
 export default function App() {
-  let isAuthenticated  = false;
+  let isAuthenticated  = true;
   return (
     <HashRouter>
       <Switch>

@@ -23,10 +23,10 @@ function Layout(props) {
             <>
                 <Header  />
                 <Switch>
+                    <Route path="/app/workflows" component={Dashboard} />
                     <Route path="/app/dashboard" component={Dashboard} />
-                    <Route exact path="/app/workflows" render={() => <Redirect to="/app/dashboard" />}/>
+                    <Route exact path="/app/dashboard" render={() => <Redirect to="/app/dashboard" />}/>
                 </Switch>
-                
             </>
         </div>
     );
