@@ -13,22 +13,26 @@ import { Node } from "../../../../models/node";
 function NodeCard(props) {
     const { name, description, status } = props.node;
 
-    const [taskName, setName] = React.useState("name")
-    const [taskDescription, setDescription] = React.useState("description")
-    const [currentState, setState] = React.useState('pending');
+    const [taskName, setName] = React.useState(name)
+    const [taskDescription, setDescription] = React.useState(description)
+    const [currentState, setState] = React.useState(status);
     let classes = useStyles(currentState);
     
     function onfabClick(params) {
         const nextStatus = Node.getNextStatus(currentState);
         setState(nextStatus)
+        props.updateNode({status: nextStatus})
     }
 
     function onNameUpdate(event) {
         setName(event.target.value)
+        props.updateNode({name: event.target.value})
     }
 
     function onDescChange(event) {
-        setDescription(event.target.value)        
+        props.updateNode({description:event.target.value}) 
+        setDescription(event.target.value)       
+       
     }
     return (
         <Paper className={classes.root}>
@@ -50,7 +54,7 @@ function NodeCard(props) {
 }
 // default props
 NodeCard.defaultProps = {
-    onStatusClick: () => { },
+    updateNode: () => { },
     node: {}
 }
 

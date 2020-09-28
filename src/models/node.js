@@ -1,8 +1,10 @@
 import { NodeStatus } from "./constants";
+import { v4 as uuidv4 } from 'uuid';
 
 export class Node {
     constructor(node = {}) {
-        this.taskName = node.taskName || '';
+        this.id = node.id || uuidv4()
+        this.name = node.name || '';
         this.status = node.status || NodeStatus.PENDING
         this.description = node.description || ''
     }

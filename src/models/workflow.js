@@ -11,7 +11,7 @@ export class Workflow {
     static getWorkflowStatus(nodes) {
         let status = null;
         if (Array.isArray(nodes)) {
-            const arr = nodes.map(node => node.status == NodeStatus.COMPLETED)
+            const arr = nodes.filter(node => node.status == NodeStatus.COMPLETED)
             status = arr.length == nodes.length
                 ? WorkflowStatus.COMPLETED
                 : WorkflowStatus.PENDING
@@ -22,6 +22,8 @@ export class Workflow {
 
     /// identify workflow status is completed/not
     static isCompleted(nodes) {
-        return this.getWorkflowStatus(nodes) === WorkflowStatus.COMPLETED
+        return Array.isArray(nodes) 
+        && nodes.length >0 
+        && this.getWorkflowStatus(nodes) === WorkflowStatus.COMPLETED
     }
 }

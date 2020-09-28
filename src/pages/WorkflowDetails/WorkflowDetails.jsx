@@ -8,9 +8,41 @@ import DeleteIcon from '@material-ui/icons/Delete';
 // styles
 import useStyles from "./styles";
 import { Grid, Paper, FormControl, OutlinedInput, InputLabel, Button } from "@material-ui/core";
+import { Node } from "../../models/node";
+import { Workflow } from "../../models/workflow";
 
 function WorkflowDetails(props) {
     const classes = useStyles();
+    const [workflowName, setName] = React.useState('')
+    let [nodes, setNodes] = React.useState([])
+
+    function addNode() {
+        setNodes([...nodes, new Node()])
+    }
+    function deleteNode() {
+        let pendingNodes = nodes;
+        pendingNodes.pop()
+        setNodes([...pendingNodes])
+    }
+    function iShuffleDisable() {
+        return !Workflow.isCompleted(nodes)
+    }
+
+    function updateNodeStatus(node, status) {
+        let availableNodes = nodes;
+        availableNodes.map(n => {
+            if (n.id === node.id) {
+                n.status = status;
+            }
+        })
+        setNodes([...availableNodes])
+    }
+    function updateNode(val, node) {
+        let availableNodes = [...nodes];
+        const findIndex = availableNodes.findIndex(n => n.id == node.id)
+        availableNodes[findIndex] = { ...node, ...val }
+        setNodes([...availableNodes])
+    }
     return (
         <div className={classes.root}>
             <Grid container spacing={3}>
@@ -22,27 +54,31 @@ function WorkflowDetails(props) {
                                 <OutlinedInput
                                     id="outlined-adornment-password"
                                     type={'text'}
-                                // value={values.password}
-                                // onChange={handleChange('password')}
+                                    value={workflowName}
+                                    onChange={(e) => setName(e.target.value)}
 
                                 />
                             </FormControl>
                         </div>
                         <div>
                             <Button
-                            className={classes.actionBtn}
+                                disabled={iShuffleDisable()}
+                                className={classes.actionBtn}
                                 startIcon={<ShuffleSharpIcon />}
                                 variant="contained" color="primary"> Shuffle</Button>
                             <Button
-                            className={classes.actionBtn}
+                                disabled={nodes.length == 0}
+                                onClick={deleteNode}
+                                className={classes.actionBtn}
                                 startIcon={<DeleteIcon />}
                                 variant="contained" color="secondary"> Delete</Button>
                             <Button
-                            className={classes.actionBtn}
+                                onClick={addNode}
+                                className={classes.actionBtn}
                                 startIcon={<AddIcon />}
                                 variant="contained" color="red"> Add Node</Button>
                             <Button
-                            className={classes.actionBtn}
+                                className={classes.actionBtn}
                                 startIcon={<SaveIcon />}
                                 variant="contained" color="primary"> Save</Button>
                         </div>
@@ -50,8 +86,11 @@ function WorkflowDetails(props) {
 
 
                     </Paper>
-                    <div style={{ display: 'flex' }}>
-                        <NodeCard></NodeCard>
+                    <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                        {nodes.map((node, i) => {
+                            return <NodeCard updateNode={(val) => updateNode(val, node)} onStatusClick={(status) => updateNodeStatus(node, status)} key={`${node.id}`} node={node}></NodeCard>
+                        })}
+                        {/* <NodeCard></NodeCard> */}
                     </div>
 
                 </Grid>
