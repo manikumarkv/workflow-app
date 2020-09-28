@@ -1,31 +1,56 @@
 import React from "react";
 import PropTypes from 'prop-types';
 
+import classnames from "classnames";
 // styles
 import useStyles from "./styles";
-import { Card, CardContent, Typography, Button, Fab, Paper, TextField, TextareaAutosize } from "@material-ui/core";
+import { Fab, Paper, TextField, TextareaAutosize } from "@material-ui/core";
 
-import AddIcon from '@material-ui/icons/Add';
 import CheckCircleOutlineRoundedIcon from '@material-ui/icons/CheckCircleOutlineRounded';
+import { NodeStatus } from "../../../../models/constants";
+import { Node } from "../../../../models/node";
 
 function NodeCard(props) {
-    let classes = useStyles();
+    const { name, description, status } = props.node;
+
+    const [taskName, setName] = React.useState("name")
+    const [taskDescription, setDescription] = React.useState("description")
+    const [currentState, setState] = React.useState('pending');
+    let classes = useStyles(currentState);
+    
+    function onfabClick(params) {
+        const nextStatus = Node.getNextStatus(currentState);
+        setState(nextStatus)
+    }
+
+    function onNameUpdate(event) {
+        setName(event.target.value)
+    }
+
+    function onDescChange(event) {
+        setDescription(event.target.value)        
+    }
     return (
         <Paper className={classes.root}>
             <div className={classes.iconContainer} >
-                <Fab className={classes.floatingIcon} color="primary" aria-label="add">
+                <Fab
+                onClick={onfabClick}
+                    className={classnames(classes.floatingIcon, { [classes.iconCompleted]: currentState == NodeStatus.COMPLETED },
+                        { [classes.iconPending]: currentState == NodeStatus.PENDING },
+                        { [classes.iconProgress]: currentState == NodeStatus.INPROGRESS })}
+                >
                     <CheckCircleOutlineRoundedIcon />
                 </Fab>
             </div>
-            <TextField id="outlined-basic" label="Outlined" variant="outlined" />
-            <TextareaAutosize className={classes.txtArea} placeholder="Empty" />
+            <TextField onChange={onNameUpdate} id="outlined-basic" value={taskName} label="Task Name" variant="outlined" />
+            <TextareaAutosize onChange={onDescChange} value={taskDescription} className={classes.txtArea} placeholder="Task Description" />
 
         </Paper>
     )
 }
 // default props
 NodeCard.defaultProps = {
-    onStatusClick : () => {},
+    onStatusClick: () => { },
     node: {}
 }
 

@@ -17,6 +17,24 @@ export default makeStyles(theme => ({
         right: -50,
         top: -50,
     },
+    iconCompleted: {
+        backgroundColor:'green',
+        '&:hover': {
+            backgroundColor:'green'
+        }
+    },
+    iconPending: {
+        backgroundColor:'grey',
+        '&:hover': {
+            backgroundColor:'grey'
+        }
+    },
+    iconProgress:{
+        backgroundColor:'blue',
+        '&:hover': {
+            backgroundColor:'blue'
+        }
+    },
     iconContainer: {
         height: 0
     },
