@@ -9,6 +9,7 @@ import WorkflowCard from "./components/Workflow/WorkflowCard";
 
 function Dashboard() {
     const [anchorEl, setAnchorEl] = React.useState(null);
+    const [workflows, addFlow] = React.useState([]);
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);

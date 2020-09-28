@@ -1,29 +1,27 @@
-import { WorkflowStatus } from "./constants";
+import { WorkflowStatus, NodeStatus } from "./constants";
 
 export class Workflow {
-    constructor(workflow) {
-        this.name = workflow.name;
-        this.status = workflow.status;
-        this.nodes = workflow.nodes
+    constructor(workflow = {}) {
+        this.name = workflow.name || null;
+        this.status = workflow.status|| null;
+        this.nodes = workflow.nodes|| []
     }
 
-    addNode(node) {
-        this.nodes.push(node);
-        return this.nodes;
-    }
-    removeNode() {
-        this.nodes.pop();
-        return this.nodes
-    }
-
-    changeStatus(status) {
-        if (WorkflowStatus.isValid(status)) {
-            this.status = status;
-            return true
-        } else {
-            console.warn('trying to update status with invalid value')
-            return false
+    // get workflow overall status
+    static getWorkflowStatus(nodes) {
+        let status = null;
+        if (Array.isArray(nodes)) {
+            const arr = nodes.map(node => node.status == NodeStatus.COMPLETED)
+            status = arr.length == nodes.length
+                ? WorkflowStatus.COMPLETED
+                : WorkflowStatus.PENDING
         }
+        return status;
+
     }
 
+    /// identify workflow status is completed/not
+    static isCompleted(nodes) {
+        return this.getWorkflowStatus(nodes) === WorkflowStatus.COMPLETED
+    }
 }
