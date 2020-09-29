@@ -19,7 +19,7 @@ function NodeCard(props) {
     let classes = useStyles(currentState);
     
     function onfabClick(params) {
-        const nextStatus = Node.getNextStatus(currentState);
+        const nextStatus = Node.getNextStatus(currentState, props.previousNode.status);
         setState(nextStatus)
         props.updateNode({status: nextStatus})
     }
@@ -39,9 +39,9 @@ function NodeCard(props) {
             <div className={classes.iconContainer} >
                 <Fab
                 onClick={onfabClick}
-                    className={classnames(classes.floatingIcon, { [classes.iconCompleted]: currentState == NodeStatus.COMPLETED },
-                        { [classes.iconPending]: currentState == NodeStatus.PENDING },
-                        { [classes.iconProgress]: currentState == NodeStatus.INPROGRESS })}
+                    className={classnames(classes.floatingIcon, { [classes.iconCompleted]: currentState === NodeStatus.COMPLETED },
+                        { [classes.iconPending]: currentState === NodeStatus.PENDING },
+                        { [classes.iconProgress]: currentState === NodeStatus.INPROGRESS })}
                 >
                     <CheckCircleOutlineRoundedIcon />
                 </Fab>
@@ -55,7 +55,8 @@ function NodeCard(props) {
 // default props
 NodeCard.defaultProps = {
     updateNode: () => { },
-    node: {}
+    node: {},
+    previousNode: {}
 }
 
 // proptypes

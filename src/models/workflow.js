@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 export class Workflow {
     constructor(workflow = {}) {
         this.id = workflow.id || uuidv4()
-        this.name = workflow.name || "null";
+        this.name = workflow.name || "";
         this.nodes = workflow.nodes|| [];
         this.status = workflow.status || WorkflowStatus.PENDING
     }
@@ -13,8 +13,8 @@ export class Workflow {
     static getWorkflowStatus(nodes) {
         let status = null;
         if (Array.isArray(nodes)) {
-            const arr = nodes.filter(node => node.status == NodeStatus.COMPLETED)
-            status = arr.length == nodes.length
+            const arr = nodes.filter(node => node.status === NodeStatus.COMPLETED)
+            status = arr.length === nodes.length
                 ? WorkflowStatus.COMPLETED
                 : WorkflowStatus.PENDING
         }

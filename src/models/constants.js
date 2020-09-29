@@ -15,3 +15,16 @@ export const WorkflowStatus = {
         return [WorkflowStatus.PENDING, WorkflowStatus.COMPLETED].includes(status)
     }
 }
+
+export const WorkflowActions = {
+    WORKFLOWS_SET_ALL: 'WORKFLOWS_SET_ALL',
+    WORKFLOWS_ADD_NEW:'WORKFLOWS_ADD_NEW',
+    DELETE_WORKFLOW:'DELETE_WORKFLOW',
+    UPDATE_WORKFLOW:'UPDATE_WORKFLOW'
+}
+export const UserActions = {
+    UPDATE_USER: 'UPDATE_USER',
+    LOGIN_SUCCESS:'LOGIN_SUCCESS',
+    SIGN_OUT_SUCCESS:'SIGN_OUT_SUCCESS',
+    LOGIN_FAILURE:'LOGIN_FAILURE'
+}

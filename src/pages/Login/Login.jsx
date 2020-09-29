@@ -1,28 +1,36 @@
 import React, { useState } from "react";
+import { connect } from "react-redux";
+
+//componnets
 import Header from "../../components/Header";
 import { Grid, Typography, TextField, Button, Card, CardContent, FormControlLabel, Checkbox, InputAdornment } from "@material-ui/core";
+// Icons
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 // styles
 import useStyles from "./styles";
-import logo from "../../logo.svg";
 
-function Login() {
+import { verifyUser } from "../../actions/user.actions";
+import { User } from "../../models/user";
+
+function Login(props) {
     var classes = useStyles();
 
     //local
     var [loginValue, setLoginValue] = useState("");
     var [passwordValue, setPasswordValue] = useState("");
+    let [errMessage, setErr] = useState('')
 
+    const onLoginClick = () => {
+        props.verifyUser(new User({username:loginValue, password:passwordValue}), setErr);
+    }
     return (
         <>
             <Header></Header>
             <Grid container className={classes.container} >
-
                 <div className={classes.formContainer}>
                     <Card className={classes.logincardContainer}>
                         <CardContent className={classes.logincard}>
-
                             <Typography className={classes.containerHeader}>Login</Typography>
                             <TextField
                                 id="email"
@@ -75,8 +83,7 @@ function Login() {
                                     disabled={
                                         loginValue.length === 0 || passwordValue.length === 0
                                     }
-                                    onClick={() => { }
-                                    }
+                                    onClick={onLoginClick}
                                     variant="contained"
                                     color="primary"
                                     size="large"
@@ -85,7 +92,9 @@ function Login() {
                                 <Button color="primary">Dont have an account ? Sign up here</Button>
 
 
+
                             </div>
+                                <Typography variant="subtitle1">{errMessage}</Typography>
                         </CardContent>
                     </Card>
 
@@ -95,4 +104,14 @@ function Login() {
     )
 }
 
-export default Login;
+const mapStateToProps = state => ({
+    user: state.userReducer.user,
+    isAuthenticated: state.userReducer.isAuthenticated
+})
+
+const mapDispatchToProps = dispatch => ({
+    verifyUser:(user, seterror) => dispatch(verifyUser(user, seterror))
+})
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps)(Login)

@@ -4,18 +4,19 @@ import classnames from "classnames";
 
 // styles
 import useStyles from "./styles";
-import { Typography, Button, Fab, Paper, TextField } from "@material-ui/core";
+import { Typography,  Fab, Paper, TextField } from "@material-ui/core";
 
-import AddIcon from '@material-ui/icons/Add';
+// Icons
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+
+//components
 import { Workflow } from "../../../../models/workflow";
 import { WorkflowStatus } from "../../../../models/constants";
 
 function WorkflowCard(props) {
     const { workflow } = props;
     let classes = useStyles();
-    const currentSatatus = Workflow.getWorkflowStatus(workflow.nodes)
     return (
         <Paper className={classes.root}>
             <div className={classes.iconContainer} >
@@ -23,15 +24,15 @@ function WorkflowCard(props) {
                     <DeleteOutlineIcon />
                 </Fab>
             </div>
-            <div onClick={props.onCardClick}>
+            <div onClick={() => props.onCardClick(workflow.id)}>
                 <TextField disabled value={workflow.name} label="WorkFlow Name" variant="outlined" />
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '20px' }}>
                     <Typography variant="body1" gutterBottom>
                         {workflow.status}
                     </Typography>
                     <Fab className={classnames(classes.workflowStatus,
-                        { [classes.iconCompleted]: workflow.status == WorkflowStatus.COMPLETED },
-                        { [classes.iconPending]: workflow.status == WorkflowStatus.PENDING })} color="primary" >
+                        { [classes.iconCompleted]: workflow.status === WorkflowStatus.COMPLETED },
+                        { [classes.iconPending]: workflow.status === WorkflowStatus.PENDING })} color="primary" >
                         <CheckCircleOutlineIcon />
                     </Fab>
                 </div>

@@ -9,21 +9,28 @@ export class Node {
         this.description = node.description || ''
     }
 
-    static getNextStatus(status) {
+    static getNextStatus(status, previousNodeSttaus) {
         let nextStatus = null;
         switch (status) {
             case NodeStatus.PENDING:
                 nextStatus = NodeStatus.INPROGRESS
                 break;
             case NodeStatus.INPROGRESS:
-                nextStatus = NodeStatus.COMPLETED
+                if (previousNodeSttaus == undefined || previousNodeSttaus == NodeStatus.COMPLETED) {
+                    nextStatus = NodeStatus.COMPLETED
+                } else {
+                    nextStatus = NodeStatus.PENDING
+                }
                 break;
             case NodeStatus.COMPLETED:
                 nextStatus = NodeStatus.PENDING
                 break;
             default:
-                break;            
+                break;
         }
         return nextStatus
+    }
+    static isValidNodes(nodes) {
+        return !nodes.filter(node => node.name === '').length > 0
     }
 }
