@@ -31,8 +31,8 @@ function WorkflowCard(props) {
                         {workflow.status}
                     </Typography>
                     <Fab className={classnames(classes.workflowStatus,
-                        { [classes.iconCompleted]: workflow.status === WorkflowStatus.COMPLETED },
-                        { [classes.iconPending]: workflow.status === WorkflowStatus.PENDING })} color="primary" >
+                        { [classes.icon_Completed]: workflow.status === WorkflowStatus.COMPLETED },
+                        { [classes.icon_Pending]: workflow.status === WorkflowStatus.PENDING })} color="primary" >
                         <CheckCircleOutlineIcon />
                     </Fab>
                 </div>

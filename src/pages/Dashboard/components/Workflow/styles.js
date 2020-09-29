@@ -28,10 +28,10 @@ export default makeStyles(theme => ({
     workflowStatus:{
 
     },
-    iconCompleted:{
+    icon_Completed:{
         backgroundColor:tinycolor('green'),
     },
-    iconPending: {
+    icon_Pending: {
         backgroundColor: tinycolor('gray')
     }
 }));
