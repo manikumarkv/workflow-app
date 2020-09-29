@@ -4,11 +4,13 @@ import classnames from "classnames";
 
 // styles
 import useStyles from "./styles";
-import { Typography, Button, Fab, Paper, TextField } from "@material-ui/core";
+import { Typography,  Fab, Paper, TextField } from "@material-ui/core";
 
-import AddIcon from '@material-ui/icons/Add';
+// Icons
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+
+//components
 import { Workflow } from "../../../../models/workflow";
 import { WorkflowStatus } from "../../../../models/constants";
 
@@ -30,8 +32,8 @@ function WorkflowCard(props) {
                         {workflow.status}
                     </Typography>
                     <Fab className={classnames(classes.workflowStatus,
-                        { [classes.iconCompleted]: workflow.status == WorkflowStatus.COMPLETED },
-                        { [classes.iconPending]: workflow.status == WorkflowStatus.PENDING })} color="primary" >
+                        { [classes.iconCompleted]: workflow.status === WorkflowStatus.COMPLETED },
+                        { [classes.iconPending]: workflow.status === WorkflowStatus.PENDING })} color="primary" >
                         <CheckCircleOutlineIcon />
                     </Fab>
                 </div>

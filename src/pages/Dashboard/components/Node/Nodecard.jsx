@@ -39,9 +39,9 @@ function NodeCard(props) {
             <div className={classes.iconContainer} >
                 <Fab
                 onClick={onfabClick}
-                    className={classnames(classes.floatingIcon, { [classes.iconCompleted]: currentState == NodeStatus.COMPLETED },
-                        { [classes.iconPending]: currentState == NodeStatus.PENDING },
-                        { [classes.iconProgress]: currentState == NodeStatus.INPROGRESS })}
+                    className={classnames(classes.floatingIcon, { [classes.iconCompleted]: currentState === NodeStatus.COMPLETED },
+                        { [classes.iconPending]: currentState === NodeStatus.PENDING },
+                        { [classes.iconProgress]: currentState === NodeStatus.INPROGRESS })}
                 >
                     <CheckCircleOutlineRoundedIcon />
                 </Fab>

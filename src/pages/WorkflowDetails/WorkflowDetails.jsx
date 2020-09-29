@@ -1,5 +1,6 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useParams, BrowserRouter as Router, Route } from "react-router-dom";
+import { connect } from "react-redux";
 
 // Components
 import { Grid, Paper, FormControl, OutlinedInput, InputLabel, Button } from "@material-ui/core";
@@ -16,14 +17,16 @@ import DeleteIcon from '@material-ui/icons/Delete';
 
 // styles
 import useStyles from "./styles";
+import { addWorkflow, updateWorkflow } from "../../actions/workflows.actions";
+import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
 
 function WorkflowDetails(props) {
     let { id } = useParams();
     let workflow = null
-    if (id == 'new') {
+    if (id === 'new') {
         workflow = new Workflow()
     } else {
-        workflow = {} // get from redux
+        workflow = props.workflows.find(workflow => workflow.id === id) // get from redux
     }
     const classes = useStyles();
     const [workflowName, setName] = React.useState('')
@@ -45,16 +48,32 @@ function WorkflowDetails(props) {
         let availableNodes = nodes;
         availableNodes.map(n => {
             if (n.id === node.id) {
-                n.status = status;
+                n.status = status;                
             }
+            return n;
         })
         setNodes([...availableNodes])
     }
     function updateNode(val, node) {
         let availableNodes = [...nodes];
-        const findIndex = availableNodes.findIndex(n => n.id == node.id)
+        const findIndex = availableNodes.findIndex(n => n.id === node.id)
         availableNodes[findIndex] = { ...node, ...val }
         setNodes([...availableNodes])
+    }
+    const saveWorkflow = () => {
+        let body = workflow
+        body = {
+            ...body,
+            name:workflowName,
+            nodes,
+            status : Workflow.getWorkflowStatus(nodes)
+        }
+        if (id === 'new') {
+            props.createWorkflow(body)
+        } else {
+            props.updateWorkflow(body)
+        }
+       return <Redirect to='/app/workflows' />
     }
     return (
         <div className={classes.root}>
@@ -80,7 +99,7 @@ function WorkflowDetails(props) {
                                 startIcon={<ShuffleSharpIcon />}
                                 variant="contained" color="primary"> Shuffle</Button>
                             <Button
-                                disabled={nodes.length == 0}
+                                disabled={nodes.length === 0}
                                 onClick={deleteNode}
                                 className={classes.actionBtn}
                                 startIcon={<DeleteIcon />}
@@ -91,6 +110,7 @@ function WorkflowDetails(props) {
                                 startIcon={<AddIcon />}
                                 variant="contained" color="red"> Add Node</Button>
                             <Button
+                                onClick={saveWorkflow}
                                 className={classes.actionBtn}
                                 startIcon={<SaveIcon />}
                                 variant="contained" color="primary"> Save</Button>
@@ -112,4 +132,17 @@ function WorkflowDetails(props) {
 }
 
 
-export default WorkflowDetails
+const mapStateToProps = state => ({
+    workflows: state.workflowsStore.workflows
+})
+
+const mapDispatchToProps = dispatch => ({
+    createWorkflow: (workflow) => dispatch(addWorkflow(workflow)),
+    updateWorkflow: workflow => dispatch(updateWorkflow(workflow))
+})
+
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(WorkflowDetails)

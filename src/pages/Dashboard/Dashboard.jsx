@@ -1,16 +1,25 @@
 import React from "react";
+import {connect} from "react-redux";
+import { withRouter } from 'react-router-dom' 
+
+//components
 import { Grid, Paper, TextField, InputAdornment, Button, Menu, MenuItem, OutlinedInput, InputLabel, FormControl } from "@material-ui/core";
+import WorkflowCard from "./components/Workflow/WorkflowCard";
+
+// icons
 import SearchSharpIcon from '@material-ui/icons/SearchSharp';
 import FilterCenterFocusSharpIcon from '@material-ui/icons/FilterCenterFocusSharp';
 import AddIcon from '@material-ui/icons/Add';
+
 // styles
 import useStyles from "./styles";
-import WorkflowCard from "./components/Workflow/WorkflowCard";
-import { Workflow } from "../../models/workflow";
 
-function Dashboard() {
+
+
+
+function Dashboard(props) {
     const [anchorEl, setAnchorEl] = React.useState(null);
-    const [workflows, setFlows] = React.useState([new Workflow(), new Workflow()]);
+    const [workflows, setFlows] = React.useState(props.workflows);
     const [searchTxt, setSearchTxt] = React.useState('')
 
     const handleClick = (event) => {
@@ -80,7 +89,7 @@ function Dashboard() {
                     </Paper>
                     <div style={{ display: 'flex' }}>
                         {workflows.map(workflow => {
-                            return <WorkflowCard onCardClick={openWorkflow} onFlowDelete={() => deleteflow(workflow.id)} workflow={workflow}></WorkflowCard>
+                            return <WorkflowCard key={workflow.id} onCardClick={openWorkflow} onFlowDelete={() => deleteflow(workflow.id)} workflow={workflow}></WorkflowCard>
                         })}
                     </div>
 
@@ -89,5 +98,16 @@ function Dashboard() {
         </div>
     )
 }
+const mapStateToProps = state => ({
+    workflows: state.workflowsStore.workflows
+})
 
-export default Dashboard;
+const mapDispatchToProps = dispatch => ({
+
+})
+
+
+export default withRouter(connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Dashboard))

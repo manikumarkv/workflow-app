@@ -6,13 +6,18 @@ import { CssBaseline } from "@material-ui/core";
 import Themes from "./themes";
 import App from './components/App';
 import * as serviceWorker from './serviceWorker';
+import { Provider } from "react-redux";
+import store from "./store";
 
 ReactDOM.render(
   <React.StrictMode>
-    <ThemeProvider theme={Themes.default}>
-      <CssBaseline />
-      <App />
-    </ThemeProvider>
+    <Provider store={store}>
+      <ThemeProvider theme={Themes.default}>
+        <CssBaseline />
+        <App />
+      </ThemeProvider>
+    </Provider>
+
   </React.StrictMode>,
   document.getElementById('root')
 );
