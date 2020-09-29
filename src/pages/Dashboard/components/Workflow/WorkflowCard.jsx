@@ -17,6 +17,12 @@ import { WorkflowStatus } from "../../../../models/constants";
 function WorkflowCard(props) {
     const { workflow } = props;
     let classes = useStyles();
+
+    let iconClass = classnames({
+        [classes.workflowStatus] : true,
+        [classes.icon_Completed]: workflow.status === WorkflowStatus.COMPLETED,
+        [classes.icon_Pending]: workflow.status === WorkflowStatus.PENDING ,
+    })
     return (
         <Paper className={classes.root}>
             <div className={classes.iconContainer} >
@@ -30,9 +36,7 @@ function WorkflowCard(props) {
                     <Typography variant="body1" gutterBottom>
                         {workflow.status}
                     </Typography>
-                    <Fab className={classnames(classes.workflowStatus,
-                        { [classes.icon_Completed]: workflow.status === WorkflowStatus.COMPLETED },
-                        { [classes.icon_Pending]: workflow.status === WorkflowStatus.PENDING })} color="primary" >
+                    <Fab className={iconClass} color="primary" >
                         <CheckCircleOutlineIcon />
                     </Fab>
                 </div>
