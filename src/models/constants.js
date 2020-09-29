@@ -23,5 +23,8 @@ export const WorkflowActions = {
     UPDATE_WORKFLOW:'UPDATE_WORKFLOW'
 }
 export const UserActions = {
-    UPDATE_USER: 'UPDATE_USER',   
+    UPDATE_USER: 'UPDATE_USER',
+    LOGIN_SUCCESS:'LOGIN_SUCCESS',
+    SIGN_OUT_SUCCESS:'SIGN_OUT_SUCCESS',
+    LOGIN_FAILURE:'LOGIN_FAILURE'
 }

@@ -133,7 +133,7 @@ function WorkflowDetails(props) {
 
 
 const mapStateToProps = state => ({
-    workflows: state.workflowsStore.workflows
+    workflows: state.workflowsReducer.workflows
 })
 
 const mapDispatchToProps = dispatch => ({

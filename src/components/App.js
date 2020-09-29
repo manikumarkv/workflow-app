@@ -2,9 +2,10 @@ import React from "react";
 import { HashRouter, Route, Switch, Redirect } from "react-router-dom";
 import Layout from "./Layout";
 import Login from "../pages/Login";
+import {connect} from "react-redux";
 
-export default function App() {
-  let isAuthenticated  = true;
+function App(props) {
+  let {isAuthenticated} = props;
   return (
     <HashRouter>
       <Switch>
@@ -12,7 +13,7 @@ export default function App() {
         <Route exact path="/app" render={() => <Redirect to="/app/dashboard" />} />
 
         <PrivateRoute path="/app" component={Layout} />
-        <PublicRoute path="/login" component={Login}/>
+        <PublicRoute path="/login" component={Login} />
         <Route render={() => <div>default/error</div>} />
       </Switch>
     </HashRouter>
@@ -59,3 +60,14 @@ export default function App() {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  user: state.userReducer.user,
+  isAuthenticated: state.userReducer.isAuthenticated
+})
+
+const mapDispatchToProps = dispatch => ({
+
+})
+export default connect(mapStateToProps,
+  mapDispatchToProps)(App)

@@ -6,7 +6,7 @@ const initialState = {
     workflows: [new Workflow()]
 }
 
-const workflowsStore = (state = initialState, action) => {
+const workflowsReducer = (state = initialState, action) => {
     switch (action.type) {
         case WorkflowActions.WORKFLOWS_SET_ALL:
             return {
@@ -39,4 +39,4 @@ const workflowsStore = (state = initialState, action) => {
     }
 }
 
-export default workflowsStore;
+export default workflowsReducer;
