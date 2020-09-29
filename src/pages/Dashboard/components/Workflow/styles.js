@@ -25,13 +25,16 @@ export default makeStyles(theme => ({
         marginTop:20,
         minHeight: 100
     },
-    workflowStatus:{
-
-    },
     icon_Completed:{
         backgroundColor:tinycolor('green'),
+        '&:hover': {
+            backgroundColor: tinycolor('green')
+        }
     },
     icon_Pending: {
-        backgroundColor: tinycolor('gray')
+        backgroundColor: tinycolor('gray'),
+        '&:hover': {
+            backgroundColor: tinycolor('gray')
+        }
     }
 }));
