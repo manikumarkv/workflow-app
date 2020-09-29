@@ -6,10 +6,12 @@ import AddIcon from '@material-ui/icons/Add';
 // styles
 import useStyles from "./styles";
 import WorkflowCard from "./components/Workflow/WorkflowCard";
+import { Workflow } from "../../models/workflow";
 
 function Dashboard() {
     const [anchorEl, setAnchorEl] = React.useState(null);
-    const [workflows, addFlow] = React.useState([]);
+    const [workflows, setFlows] = React.useState([new Workflow(), new Workflow()]);
+    const [searchTxt, setSearchTxt] = React.useState('')
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -18,20 +20,33 @@ function Dashboard() {
     const handleClose = () => {
         setAnchorEl(null);
     };
+    const deleteflow = (id) => {
+        let availableFlows = workflows;
+        availableFlows = availableFlows.filter(flow => flow.id !== id);
+        setFlows([...availableFlows])
+    }
+    const filterWorkflows = (e) => {
+        const val = e.target.value
+        let availableFlows = workflows; // props.workflows
+        availableFlows = workflows.filter(flow => (flow.name).includes(val))
+        setFlows([...availableFlows])
+    }
+    const openWorkflow = (id) => {
+        alert(1)
+    }
     let classes = useStyles();
     return (
         <div className={classes.root}>
             <Grid container spacing={3}>
                 <Grid item xs={12}>
                     <Paper className={classes.paper}>
-                        <div className={classes.filters}>  
+                        <div className={classes.filters}>
                             <FormControl variant="outlined">
                                 <InputLabel htmlFor="outlined-adornment-password">Search work flow</InputLabel>
                                 <OutlinedInput
-                                    id="outlined-adornment-password"
                                     type={'text'}
-                                    // value={values.password}
-                                    // onChange={handleChange('password')}
+                                    value={searchTxt}
+                                    onChange={filterWorkflows}
                                     endAdornment={
                                         <InputAdornment position="end">
                                             <SearchSharpIcon />
@@ -58,17 +73,17 @@ function Dashboard() {
                             </Menu>
                         </div>
 
-                        <Button 
-                        startIcon={<AddIcon />}
-                        variant="contained" color="primary"> Create New workflow</Button>
+                        <Button
+                            startIcon={<AddIcon />}
+                            variant="contained" color="primary"> Create New workflow</Button>
 
                     </Paper>
-                    <div style={{display:'flex'}}>
-                    <WorkflowCard></WorkflowCard>
-                    <WorkflowCard></WorkflowCard>
-                    <WorkflowCard></WorkflowCard><WorkflowCard></WorkflowCard>
+                    <div style={{ display: 'flex' }}>
+                        {workflows.map(workflow => {
+                            return <WorkflowCard onCardClick={openWorkflow} onFlowDelete={() => deleteflow(workflow.id)} workflow={workflow}></WorkflowCard>
+                        })}
                     </div>
-                    
+
                 </Grid>
             </Grid>
         </div>
