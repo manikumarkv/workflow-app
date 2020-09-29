@@ -1,10 +1,12 @@
 import { WorkflowStatus, NodeStatus } from "./constants";
+import { v4 as uuidv4 } from 'uuid';
 
 export class Workflow {
     constructor(workflow = {}) {
-        this.name = workflow.name || null;
-        this.status = workflow.status|| null;
-        this.nodes = workflow.nodes|| []
+        this.id = workflow.id || uuidv4()
+        this.name = workflow.name || "null";
+        this.nodes = workflow.nodes|| [];
+        this.status = workflow.status || WorkflowStatus.PENDING
     }
 
     // get workflow overall status

@@ -26,7 +26,8 @@ function Layout(props) {
                 <Switch>
                     <Route path="/app/workflows" component={Dashboard} />
                     <Route path="/app/dashboard" component={Dashboard} />                    
-                    <Route exact path="/app/workflow/new" component={WorkflowDetails} />
+                    <Route exact path="/app/workflow/:id" component={WorkflowDetails} />
+                    <Route exact path="/app/workflow" render={() => <Redirect to="/app/workflow/new" />}/>
                     <Route exact path="/app/dashboard" render={() => <Redirect to="/app/dashboard" />}/>
                 </Switch>
             </>

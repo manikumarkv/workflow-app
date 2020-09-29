@@ -1,17 +1,30 @@
 import React from "react";
+import { useParams } from "react-router-dom";
+
+// Components
+import { Grid, Paper, FormControl, OutlinedInput, InputLabel, Button } from "@material-ui/core";
 import NodeCard from "../Dashboard/components/Node/Nodecard";
+import { Node } from "../../models/node";
+import { Workflow } from "../../models/workflow";
+
+//Icons
 import ShuffleSharpIcon from '@material-ui/icons/ShuffleSharp';
 import SaveIcon from '@material-ui/icons/Save';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 
+
 // styles
 import useStyles from "./styles";
-import { Grid, Paper, FormControl, OutlinedInput, InputLabel, Button } from "@material-ui/core";
-import { Node } from "../../models/node";
-import { Workflow } from "../../models/workflow";
 
 function WorkflowDetails(props) {
+    let { id } = useParams();
+    let workflow = null
+    if (id == 'new') {
+        workflow = new Workflow()
+    } else {
+        workflow = {} // get from redux
+    }
     const classes = useStyles();
     const [workflowName, setName] = React.useState('')
     let [nodes, setNodes] = React.useState([])
@@ -90,7 +103,6 @@ function WorkflowDetails(props) {
                         {nodes.map((node, i) => {
                             return <NodeCard updateNode={(val) => updateNode(val, node)} onStatusClick={(status) => updateNodeStatus(node, status)} key={`${node.id}`} node={node}></NodeCard>
                         })}
-                        {/* <NodeCard></NodeCard> */}
                     </div>
 
                 </Grid>

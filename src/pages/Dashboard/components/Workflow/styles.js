@@ -23,5 +23,14 @@ export default makeStyles(theme => ({
     txtArea: {
         marginTop:20,
         minHeight: 100
+    },
+    workflowStatus:{
+
+    },
+    iconCompleted:{
+        backgroundColor:'green',
+    },
+    iconPending: {
+        backgroundColor:'gray'
     }
 }));
