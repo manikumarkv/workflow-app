@@ -20,8 +20,8 @@ function WorkflowCard(props) {
 
     let iconClass = classnames({
         [classes.workflowStatus] : true,
-        [classes.icon_Completed]: workflow.status === WorkflowStatus.COMPLETED,
-        [classes.icon_Pending]: workflow.status === WorkflowStatus.PENDING ,
+        //[classes.icon_Completed]: workflow.status === WorkflowStatus.COMPLETED,
+        //[classes.icon_Pending]: workflow.status === WorkflowStatus.PENDING ,
     })
     return (
         <Paper className={classes.root}>
@@ -36,7 +36,7 @@ function WorkflowCard(props) {
                     <Typography variant="body1" gutterBottom>
                         {workflow.status}
                     </Typography>
-                    <Fab className={iconClass} color="primary" >
+                    <Fab className={iconClass} color={ workflow.status === WorkflowStatus.COMPLETED ? 'primary' : 'default'} >
                         <CheckCircleOutlineIcon />
                     </Fab>
                 </div>

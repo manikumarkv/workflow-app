@@ -95,6 +95,7 @@ function Login(props) {
 
                             </div>
                                 <Typography variant="subtitle1">{errMessage}</Typography>
+                                <Typography>username: mani password: password</Typography>
                         </CardContent>
                     </Card>
 
