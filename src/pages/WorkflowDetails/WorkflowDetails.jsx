@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useParams, BrowserRouter as Router, Route } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { connect } from "react-redux";
 
 // Components
@@ -21,8 +21,9 @@ import { addWorkflow, updateWorkflow } from "../../actions/workflows.actions";
 import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
 
 function WorkflowDetails(props) {
+
     let { id } = useParams();
-    let workflow = null
+    let workflow = null;
     if (id === 'new') {
         workflow = new Workflow()
     } else {
@@ -32,12 +33,12 @@ function WorkflowDetails(props) {
     const [workflowName, setName] = React.useState('')
     let [nodes, setNodes] = React.useState([]);
     let [isSaveCompleted, setIsSaveCompleted] = React.useState(false)
-    useEffect(() => {
+    useEffect(() => {       
         // Update the document title using the browser API
         setNodes(workflow.nodes)
         setName(workflow.name)
         console.log(1);
-    },[1]);
+    }, [props.workflow]);
 
     function addNode() {
         setNodes([...nodes, new Node()])
@@ -86,17 +87,17 @@ function WorkflowDetails(props) {
     const isSaveEnable = () => {
         return Node.isValidNodes(nodes) && workflowName.length > 0
     }
-    if (isSaveCompleted == true) {
+    if (isSaveCompleted === true) {
         return <Redirect to={`/app/dashboard`} />
     }
 
-    const shuffleNodes =() => {
+    const shuffleNodes = () => {
         let availableNodes = nodes;
         availableNodes = availableNodes.sort(() => Math.random() - 0.5)
         setNodes([...availableNodes])
     }
     const isAddNodeEnable = () => {
-        return nodes.length == 0 || Node.isValidNodes(nodes)
+        return nodes.length === 0 || Node.isValidNodes(nodes)
     }
     return (
         <div className={classes.root}>
@@ -146,12 +147,12 @@ function WorkflowDetails(props) {
 
                     </Paper>
                     <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-                        {nodes.map((node, i,arr) => {
-                            return <NodeCard previousNode={arr[i-1]} updateNode={(val) => updateNode(val, node)} onStatusClick={(status) => updateNodeStatus(node, status)} key={`${node.id}`} node={node}></NodeCard>
+                        {nodes.map((node, i, arr) => {
+                            return <NodeCard previousNode={arr[i - 1]} updateNode={(val) => updateNode(val, node)} onStatusClick={(status) => updateNodeStatus(node, status)} key={`${node.id}`} node={node}></NodeCard>
                         })}
                     </div>
-                    <div style={{ display: 'flex', justifyContent:'center' }}>
-                        {nodes.length == 0
+                    <div style={{ display: 'flex', justifyContent: 'center' }}>
+                        {nodes.length === 0
                             ? <Typography variant="subtitle1">No Nodes Available</Typography>
                             : null}
                     </div>

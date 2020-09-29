@@ -1,5 +1,4 @@
 import { WorkflowActions } from '../models/constants'
-import { Workflow } from '../models/workflow'
 
 
 const initialState = {

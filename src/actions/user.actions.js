@@ -12,7 +12,7 @@ export const verifyUser = (user, seterror) => (dispatch, getState) => {
 }
 
 const isUserAvailabel = (user, users) => {
-  return users.find(usr => usr.username == user.username && usr.password === user.password) !== undefined
+  return users.find(usr => usr.username === user.username && usr.password === user.password) !== undefined
 }
 
 

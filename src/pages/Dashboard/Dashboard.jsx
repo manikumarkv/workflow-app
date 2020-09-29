@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { withRouter, Redirect } from 'react-router-dom'
 
 //components
-import { Grid, Paper, TextField, InputAdornment, Button, Menu, MenuItem, OutlinedInput, InputLabel, FormControl, Typography } from "@material-ui/core";
+import { Grid, Paper, InputAdornment, Button, Menu, MenuItem, OutlinedInput, InputLabel, FormControl, Typography } from "@material-ui/core";
 import WorkflowCard from "./components/Workflow/WorkflowCard";
 
 // icons
@@ -26,7 +26,7 @@ function Dashboard(props) {
 
     useEffect(() => {
         setFlows(props.workflows)
-    }, [])
+    }, [props.workflows])
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -112,7 +112,7 @@ function Dashboard(props) {
                     </div>
 
                     <div style={{ display: 'flex', justifyContent: 'center' }}>
-                        {workflows.length == 0 ?
+                        {workflows.length === 0 ?
                             <Typography variant="h3"> No Workflows Available</Typography>
                             : null}
                     </div>

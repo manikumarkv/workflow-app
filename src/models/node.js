@@ -16,7 +16,7 @@ export class Node {
                 nextStatus = NodeStatus.INPROGRESS
                 break;
             case NodeStatus.INPROGRESS:
-                if (previousNodeSttaus == undefined || previousNodeSttaus == NodeStatus.COMPLETED) {
+                if (previousNodeSttaus === undefined || previousNodeSttaus === NodeStatus.COMPLETED) {
                     nextStatus = NodeStatus.COMPLETED
                 } else {
                     nextStatus = NodeStatus.PENDING
