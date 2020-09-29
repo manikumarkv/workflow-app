@@ -1,4 +1,5 @@
 import { makeStyles } from "@material-ui/styles";
+import tinycolor from "tinycolor2";
 
 export default makeStyles(theme => ({
     root: {
@@ -28,9 +29,9 @@ export default makeStyles(theme => ({
 
     },
     iconCompleted:{
-        backgroundColor:'green',
+        backgroundColor:tinycolor('green'),
     },
     iconPending: {
-        backgroundColor:'gray'
+        backgroundColor: tinycolor('gray')
     }
 }));
