@@ -14,7 +14,8 @@ export const deleteWorkflow = (id) => {
     }
 }
 
-export const updateWorkflow =(workflow) => {
+export const updateWorkflow = (workflow) => {
+    debugger
     return {
         workflow,
         type:WorkflowActions.UPDATE_WORKFLOW

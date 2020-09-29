@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useParams, BrowserRouter as Router, Route } from "react-router-dom";
 import { connect } from "react-redux";
 
 // Components
-import { Grid, Paper, FormControl, OutlinedInput, InputLabel, Button } from "@material-ui/core";
+import { Grid, Paper, FormControl, OutlinedInput, InputLabel, Button, Typography } from "@material-ui/core";
 import NodeCard from "../Dashboard/components/Node/Nodecard";
 import { Node } from "../../models/node";
 import { Workflow } from "../../models/workflow";
@@ -30,7 +30,14 @@ function WorkflowDetails(props) {
     }
     const classes = useStyles();
     const [workflowName, setName] = React.useState('')
-    let [nodes, setNodes] = React.useState([])
+    let [nodes, setNodes] = React.useState([]);
+    let [isSaveCompleted, setIsSaveCompleted] = React.useState(false)
+    useEffect(() => {
+        // Update the document title using the browser API
+        setNodes(workflow.nodes)
+        setName(workflow.name)
+        console.log(1);
+    },[1]);
 
     function addNode() {
         setNodes([...nodes, new Node()])
@@ -48,7 +55,7 @@ function WorkflowDetails(props) {
         let availableNodes = nodes;
         availableNodes.map(n => {
             if (n.id === node.id) {
-                n.status = status;                
+                n.status = status;
             }
             return n;
         })
@@ -64,16 +71,32 @@ function WorkflowDetails(props) {
         let body = workflow
         body = {
             ...body,
-            name:workflowName,
+            name: workflowName,
             nodes,
-            status : Workflow.getWorkflowStatus(nodes)
+            status: Workflow.getWorkflowStatus(nodes)
         }
         if (id === 'new') {
             props.createWorkflow(body)
         } else {
             props.updateWorkflow(body)
         }
-       return <Redirect to='/app/workflows' />
+        setIsSaveCompleted(true)
+
+    }
+    const isSaveEnable = () => {
+        return Node.isValidNodes(nodes) && workflowName.length > 0
+    }
+    if (isSaveCompleted == true) {
+        return <Redirect to={`/app/dashboard`} />
+    }
+
+    const shuffleNodes =() => {
+        let availableNodes = nodes;
+        availableNodes = availableNodes.sort(() => Math.random() - 0.5)
+        setNodes([...availableNodes])
+    }
+    const isAddNodeEnable = () => {
+        return nodes.length == 0 || Node.isValidNodes(nodes)
     }
     return (
         <div className={classes.root}>
@@ -96,6 +119,7 @@ function WorkflowDetails(props) {
                             <Button
                                 disabled={iShuffleDisable()}
                                 className={classes.actionBtn}
+                                onClick={shuffleNodes}
                                 startIcon={<ShuffleSharpIcon />}
                                 variant="contained" color="primary"> Shuffle</Button>
                             <Button
@@ -107,10 +131,12 @@ function WorkflowDetails(props) {
                             <Button
                                 onClick={addNode}
                                 className={classes.actionBtn}
+                                disabled={!isAddNodeEnable()}
                                 startIcon={<AddIcon />}
-                                variant="contained" color="red"> Add Node</Button>
+                                variant="contained" color="primary"> Add Node</Button>
                             <Button
                                 onClick={saveWorkflow}
+                                disabled={!isSaveEnable()}
                                 className={classes.actionBtn}
                                 startIcon={<SaveIcon />}
                                 variant="contained" color="primary"> Save</Button>
@@ -120,9 +146,14 @@ function WorkflowDetails(props) {
 
                     </Paper>
                     <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-                        {nodes.map((node, i) => {
-                            return <NodeCard updateNode={(val) => updateNode(val, node)} onStatusClick={(status) => updateNodeStatus(node, status)} key={`${node.id}`} node={node}></NodeCard>
+                        {nodes.map((node, i,arr) => {
+                            return <NodeCard previousNode={arr[i-1]} updateNode={(val) => updateNode(val, node)} onStatusClick={(status) => updateNodeStatus(node, status)} key={`${node.id}`} node={node}></NodeCard>
                         })}
+                    </div>
+                    <div style={{ display: 'flex', justifyContent:'center' }}>
+                        {nodes.length == 0
+                            ? <Typography variant="subtitle1">No Nodes Available</Typography>
+                            : null}
                     </div>
 
                 </Grid>

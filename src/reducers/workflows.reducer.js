@@ -3,7 +3,7 @@ import { Workflow } from '../models/workflow'
 
 
 const initialState = {
-    workflows: [new Workflow()]
+    workflows: []
 }
 
 const workflowsReducer = (state = initialState, action) => {
@@ -23,12 +23,12 @@ const workflowsReducer = (state = initialState, action) => {
                 workflows: [...state.workflows.filter(workflow => workflow.id !== action.id)]
             }
         case WorkflowActions.UPDATE_WORKFLOW:
-            const arr = [...state.workflows];
-            arr.map(workflow => {
-                if (workflow.id === action.workflow.id) {
-                    return {...workflow, ...action.workflow}
+            let arr = state.workflows;
+            arr = arr.map(flow => {
+                if (flow.id === action.workflow.id) {
+                    return { ...flow, ...action.workflow }
                 }
-                return workflow
+                return flow
             })
             return {
                 ...state,

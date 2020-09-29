@@ -19,7 +19,7 @@ function NodeCard(props) {
     let classes = useStyles(currentState);
     
     function onfabClick(params) {
-        const nextStatus = Node.getNextStatus(currentState);
+        const nextStatus = Node.getNextStatus(currentState, props.previousNode.status);
         setState(nextStatus)
         props.updateNode({status: nextStatus})
     }
@@ -55,7 +55,8 @@ function NodeCard(props) {
 // default props
 NodeCard.defaultProps = {
     updateNode: () => { },
-    node: {}
+    node: {},
+    previousNode: {}
 }
 
 // proptypes

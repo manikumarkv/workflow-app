@@ -17,7 +17,6 @@ import { WorkflowStatus } from "../../../../models/constants";
 function WorkflowCard(props) {
     const { workflow } = props;
     let classes = useStyles();
-    const currentSatatus = Workflow.getWorkflowStatus(workflow.nodes)
     return (
         <Paper className={classes.root}>
             <div className={classes.iconContainer} >
@@ -25,7 +24,7 @@ function WorkflowCard(props) {
                     <DeleteOutlineIcon />
                 </Fab>
             </div>
-            <div onClick={props.onCardClick}>
+            <div onClick={() => props.onCardClick(workflow.id)}>
                 <TextField disabled value={workflow.name} label="WorkFlow Name" variant="outlined" />
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '20px' }}>
                     <Typography variant="body1" gutterBottom>

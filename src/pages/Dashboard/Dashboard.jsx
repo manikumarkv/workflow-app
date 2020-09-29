@@ -1,9 +1,9 @@
-import React from "react";
-import {connect} from "react-redux";
-import { withRouter } from 'react-router-dom' 
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
+import { withRouter, Redirect } from 'react-router-dom'
 
 //components
-import { Grid, Paper, TextField, InputAdornment, Button, Menu, MenuItem, OutlinedInput, InputLabel, FormControl } from "@material-ui/core";
+import { Grid, Paper, TextField, InputAdornment, Button, Menu, MenuItem, OutlinedInput, InputLabel, FormControl, Typography } from "@material-ui/core";
 import WorkflowCard from "./components/Workflow/WorkflowCard";
 
 // icons
@@ -13,21 +13,32 @@ import AddIcon from '@material-ui/icons/Add';
 
 // styles
 import useStyles from "./styles";
+import { WorkflowStatus } from "../../models/constants";
 
 
 
 
 function Dashboard(props) {
     const [anchorEl, setAnchorEl] = React.useState(null);
-    const [workflows, setFlows] = React.useState(props.workflows);
+    const [workflows, setFlows] = React.useState([]);
     const [searchTxt, setSearchTxt] = React.useState('')
+    const [selectedworkflow, setWorkFlow] = React.useState(null)
+
+    useEffect(() => {
+        setFlows(props.workflows)
+    }, [])
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
 
-    const handleClose = () => {
+    const handleClose = (status) => {
         setAnchorEl(null);
+        setSearchTxt('')
+        let availableFlows = props.workflows;
+        if (status !== null) { availableFlows = availableFlows.filter(flow => flow.status === status); }
+
+        setFlows([...availableFlows])
     };
     const deleteflow = (id) => {
         let availableFlows = workflows;
@@ -36,14 +47,18 @@ function Dashboard(props) {
     }
     const filterWorkflows = (e) => {
         const val = e.target.value
-        let availableFlows = workflows; // props.workflows
-        availableFlows = workflows.filter(flow => (flow.name).includes(val))
+        setSearchTxt(val)
+        let availableFlows = props.workflows
+        availableFlows = availableFlows.filter(flow => (flow.name).includes(val))
         setFlows([...availableFlows])
     }
     const openWorkflow = (id) => {
-        alert(1)
+        setWorkFlow(id)
     }
     let classes = useStyles();
+    if (selectedworkflow !== null) {
+        return <Redirect to={`/app/workflow/${selectedworkflow}`} />
+    }
     return (
         <div className={classes.root}>
             <Grid container spacing={3}>
@@ -69,6 +84,7 @@ function Dashboard(props) {
                             <Button className={classes.filterBtn} variant="outlined"
                                 onClick={handleClick}
                                 startIcon={<FilterCenterFocusSharpIcon />}>Filter</Button>
+                                
                             <Menu
                                 id="simple-menu"
                                 anchorEl={anchorEl}
@@ -76,13 +92,14 @@ function Dashboard(props) {
                                 open={Boolean(anchorEl)}
                                 onClose={handleClose}
                             >
-                                <MenuItem onClick={handleClose}>Completed</MenuItem>
-                                <MenuItem onClick={handleClose}>Pending</MenuItem>
-                                <MenuItem onClick={handleClose}>In Progress</MenuItem>
+                                <MenuItem onClick={() => handleClose(null)}>All</MenuItem>
+                                <MenuItem onClick={() => handleClose(WorkflowStatus.COMPLETED)}>Completed</MenuItem>
+                                <MenuItem onClick={() => handleClose(WorkflowStatus.PENDING)}>Pending</MenuItem>
                             </Menu>
                         </div>
 
                         <Button
+                            onClick={() => setWorkFlow('new')}
                             startIcon={<AddIcon />}
                             variant="contained" color="primary"> Create New workflow</Button>
 
@@ -91,8 +108,14 @@ function Dashboard(props) {
                         {workflows.map(workflow => {
                             return <WorkflowCard key={workflow.id} onCardClick={openWorkflow} onFlowDelete={() => deleteflow(workflow.id)} workflow={workflow}></WorkflowCard>
                         })}
+
                     </div>
 
+                    <div style={{ display: 'flex', justifyContent: 'center' }}>
+                        {workflows.length == 0 ?
+                            <Typography variant="h3"> No Workflows Available</Typography>
+                            : null}
+                    </div>
                 </Grid>
             </Grid>
         </div>

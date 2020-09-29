@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 export class Workflow {
     constructor(workflow = {}) {
         this.id = workflow.id || uuidv4()
-        this.name = workflow.name || "null";
+        this.name = workflow.name || "";
         this.nodes = workflow.nodes|| [];
         this.status = workflow.status || WorkflowStatus.PENDING
     }
